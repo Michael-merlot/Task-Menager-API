@@ -1,5 +1,6 @@
 package com.taskmanager.service;
 
+import com.taskmanager.exception.TaskNotFoundException;
 import com.taskmanager.model.*;
 import com.taskmanager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TaskService {
     }
 
     public Task getTaskById(Long id){
-        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Задача не найдена"));
+        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public Task createTask(Task task) {

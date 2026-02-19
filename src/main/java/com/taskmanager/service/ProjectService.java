@@ -1,5 +1,6 @@
 package com.taskmanager.service;
 
+import com.taskmanager.exception.ProjectNotFoundException;
 import com.taskmanager.model.*;
 import com.taskmanager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ProjectService {
     }
 
     public Project getProjectById(Long id){
-        return projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Проект с ID " + id + " не найден"));
+        return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
     public Project createProject(Project project){

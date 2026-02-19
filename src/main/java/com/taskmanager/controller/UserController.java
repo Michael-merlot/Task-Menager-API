@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Создать пользователя")
+    @Operation(summary = "Создать пользователя", description = "Регистрация нового пользователя в системе")
     public User createUser(@RequestBody User user){
         return userService.createUser(user);
     }
