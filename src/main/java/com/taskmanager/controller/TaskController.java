@@ -55,20 +55,20 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/status")
-    @Operation(summary = "Обновить статус задачи")
+    @Operation(summary = "Обновить статус задачи", description = "Обновить статус: TODO, PROGRESS, DONE, CANCELLED")
     public Task updateTaskStatus(@PathVariable Long id, @RequestBody Map<String, String> body){
         TaskStatus status = TaskStatus.valueOf(body.get("status"));
         return taskService.updateTaskStatus(id, status);
     }
 
     @PatchMapping("/{id}/assign/{userId}")
-    @Operation(summary = "Назначить исполнителя")
+    @Operation(summary = "Назначить исполнителя", description = "Назначить задачу конкретному пользователю")
     public Task assigneeToUser(@PathVariable Long id, @PathVariable Long userId){
         return taskService.assignTaskToUser(id, userId);
     }
 
     @GetMapping("/overdue")
-    @Operation(summary = "Просроченные задачи")
+    @Operation(summary = "Просроченные задачи", description = "Задачи, у которых dueDate прошла и статус не DONE")
     public List<Task> getOverdueTasks(){
         return taskService.getOverdueTasks();
     }

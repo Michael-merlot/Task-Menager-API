@@ -82,8 +82,8 @@ public class UserServiceTest {
     @Test
     @DisplayName("Создать пользователя - email уже существует")
     void createUser_EmailExists_ShouldThrowException(){
-        User newUser = new User("Иван", "ivan@mail.com", "123", UserRole.USER);
-        when(userRepository.existsByEmail("ivan@mail.com")).thenReturn(true);
+        User newUser = new User("Иван", "ivan1@mail.com", "123", UserRole.USER);
+        when(userRepository.existsByEmail("ivan1@mail.com")).thenReturn(true);
         assertThrows(DuplicateEmailException.class, () -> userService.createUser(newUser));
 
         verify(userRepository, times(1)).existsByEmail("ivan@mail.com");
