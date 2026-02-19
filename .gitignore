@@ -1,0 +1,16 @@
+# Maven
+target/
+*.class
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Spring Boot
+application-secret.properties
+
+# OS
+.DS_Store
+Thumbs.db
