@@ -5,6 +5,7 @@ import com.taskmanager.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.taskmanager.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.taskmanager.repository.UserRepository;
 import com.taskmanager.repository.TaskRepository;
 import java.util.*;
@@ -18,6 +19,9 @@ public class UserService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -30,6 +34,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())){
             throw new RuntimeException("Email " + user.getEmail() + " уже зарегистрирован");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
