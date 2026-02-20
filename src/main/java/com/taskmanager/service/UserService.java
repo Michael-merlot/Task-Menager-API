@@ -2,6 +2,7 @@ package com.taskmanager.service;
 
 import com.taskmanager.exception.UserNotFoundException;
 import com.taskmanager.model.Task;
+import com.taskmanager.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.taskmanager.model.User;
@@ -60,5 +61,13 @@ public class UserService {
     public List<Task> getUserTasks(Long userId){
         User user = getUserById(userId);
         return taskRepository.findByAssignee(user);
+    }
+
+    public User getCurrentUser() {
+        String email = SecurityUtils.getCurrentUserEmail();
+        if (email == null) {
+            throw new RuntimeException("Пользователь не авторизован");
+        }
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Текущий пользователь не найден"));
     }
 }

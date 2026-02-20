@@ -47,6 +47,12 @@ public class TaskController {
         return taskService.updateTask(id, task);
     }
 
+    @GetMapping("/my")
+    @Operation(summary = "Мои задачи", description = "Возвращает задачи назначенные текущему пользователю")
+    public List<Task> getMyTasks() {
+        return taskService.getMyTasks();
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить задачу")
     @ResponseStatus(HttpStatus.NO_CONTENT)

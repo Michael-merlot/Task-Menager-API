@@ -1,5 +1,6 @@
 package com.taskmanager.service;
 
+import com.taskmanager.exception.ProjectNotFoundException;
 import com.taskmanager.exception.TaskNotFoundException;
 import com.taskmanager.model.*;
 import com.taskmanager.repository.*;
@@ -21,6 +22,9 @@ public class TaskService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     public List<Task> getAllTasks(){
         return taskRepository.findAll();
@@ -93,5 +97,22 @@ public class TaskService {
 
     public List<Task> getTasksByStatus(TaskStatus status){
         return taskRepository.findByStatus(status);
+    }
+
+    public List<Task> getMyTasks() {
+        User currentUser = userService.getCurrentUser();
+        return taskRepository.findByAssignee(currentUser);
+    }
+
+    public boolean isTaskOwner(Long taskId) {
+        User currentUser = userService.getCurrentUser();
+        Task task = getTaskById(taskId);
+        return task.getAssignee() != null && task.getAssignee().getId().equals(currentUser.getId());
+    }
+
+    public boolean isProjectOwner(Long projectId) {
+        User currentUser = userService.getCurrentUser();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        return project.getOwner().getId().equals(currentUser.getId());
     }
 }

@@ -2,6 +2,8 @@ package com.taskmanager.controller;
 
 import com.taskmanager.dto.*;
 import com.taskmanager.service.AuthService;
+import com.taskmanager.service.UserService;
+import com.taskmanager.model.User;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,6 +18,9 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,5 +39,11 @@ public class AuthController {
     )
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @GetMapping("/me")
+    @Operation(summary = "Получить текущего пользователя", description = "Возвращает информацию о текущем авторизованном пользователе")
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
     }
 }

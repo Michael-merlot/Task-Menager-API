@@ -4,6 +4,7 @@ import com.taskmanager.model.Task;
 import com.taskmanager.model.User;
 import com.taskmanager.repository.UserRepository;
 import com.taskmanager.service.UserService;
+import com.taskmanager.security.IsAdmin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
+    @IsAdmin
     @Operation(summary = "Получить всех пользователей", description = "Возвращает список всех зарегистрированных пользователей")
     @ApiResponse(responseCode = "200", description = "Список пользователей получен")
     public List<User> getAllUsers(){
@@ -51,12 +53,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     @Operation(summary = "Обновить пользователя")
     public User updateUser(@PathVariable Long id, @RequestBody User user){
         return userService.updateUser(id, user);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Удалить пользователя")
     public void deleteUser(@PathVariable Long id){
@@ -68,4 +72,6 @@ public class UserController {
     public List<Task> getTasksById(@PathVariable Long id){
         return userService.getUserTasks(id);
     }
+
+
 }

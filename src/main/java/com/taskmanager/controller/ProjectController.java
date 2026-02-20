@@ -4,6 +4,7 @@ import com.taskmanager.model.Project;
 import com.taskmanager.model.Task;
 import com.taskmanager.service.ProjectService;
 import com.taskmanager.service.TaskService;
+import com.taskmanager.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -54,6 +55,12 @@ public class ProjectController {
     @Operation(summary = "Удалить проект")
     public void deleteProject(@PathVariable Long id){
         projectService.deleteProject(id);
+    }
+
+    @GetMapping("/my")
+    @Operation(summary = "Мои проекты", description = "Возвращает проекты текущего пользователя")
+    public List<Project> getMyProjects() {
+        return projectService.getMyProjects();
     }
 
     @GetMapping("/{id}/tasks")
