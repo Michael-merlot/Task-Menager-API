@@ -3,6 +3,7 @@ package com.taskmanager.controller;
 import com.taskmanager.model.*;
 import com.taskmanager.model.TaskStatus;
 import com.taskmanager.service.*;
+import com.taskmanager.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -65,6 +66,12 @@ public class TaskController {
     public Task updateTaskStatus(@PathVariable Long id, @RequestBody Map<String, String> body){
         TaskStatus status = TaskStatus.valueOf(body.get("status"));
         return taskService.updateTaskStatus(id, status);
+    }
+
+    @GetMapping("/my/statistics")
+    @Operation(summary = "Моя статистика", description = "Статистика задач и проектов текущего пользователя")
+    public UserStatistics getMyStatistics() {
+        return taskService.getMyStatistics();
     }
 
     @PatchMapping("/{id}/assign/{userId}")

@@ -23,8 +23,8 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Task Manager API")
                         .description("REST API для управления задачами и проектами")
-                        .version("1.0.0")
-                        .contact(new Contact().name("Michael").email("holevhuik@yandex.ru"))
+                        .version("2.0.0")
+                        .contact(new Contact().name("Michael").email("holevhuik@yandex.ru").url("https://github.com/Michael-merlot/Task-Menager-API"))
                 )
                 .addSecurityItem(securityRequirement)
                 .components(new Components().addSecuritySchemes("bearerAuth", securityScheme));

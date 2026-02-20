@@ -5,25 +5,34 @@ REST API для управления задачами и проектами.
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.4-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
+![JWT](https://img.shields.io/badge/JWT-Auth-red)
 
 ## Технологии
 
 - **Java 21**
 - **Spring Boot 3.2.4**
-- **Spring Data JPA** — работа с БД
+  - Spring Web
+  - Spring Data JPA
+  - Spring Security
 - **PostgreSQL** — база данных
 - **Hibernate** — ORM
 - **Maven** — сборка проекта
+- **JWT (JSON Web Token)** — авторизация
+- **BCrypt** — хеширование паролей
 - **Swagger/OpenAPI** — документация API
 - **JUnit 5 + Mockito** — тестирование
 
 ## Возможности
 
+- Регистрация и вход в систему
+- Управление пользователями (ADMIN)
 - CRUD операции для пользователей, проектов и задач
 - Статусы задач: TODO, IN_PROGRESS, DONE, CANCELLED
 - Приоритеты: LOW, MEDIUM, HIGH, CRITICAL
 - Назначение задач пользователям
 - Фильтрация просроченных задач
+- Личная статистика пользователя
+- Пользователь видит только свои данные
 - Валидация входных данных
 - Обработка ошибок (GlobalExceptionHandler)
 - Swagger документация
@@ -69,6 +78,13 @@ http://localhost:8080/swagger-ui.html
 
 ## API Endpoints
 
+### Авторизация
+| Метод | URL | Описание |
+|-------|-----|----------|
+| POST | `/api/auth/register` | Регистрация |
+| POST | `/api/auth/login` | Вход |
+| GET | `/api/auth/me` | Текущий пользователь |
+
 ### Пользователи
 
 | Метод | URL | Описание |
@@ -97,6 +113,7 @@ http://localhost:8080/swagger-ui.html
 |-------|-----|----------|
 | GET | `/api/tasks` | Все задачи |
 | GET | `/api/tasks/{id}` | Задача по ID |
+| GET | `/api/tasks/my/statistics` | Моя статистика |
 | POST | `/api/tasks` | Создать задачу |
 | PUT | `/api/tasks/{id}` | Обновить задачу |
 | DELETE | `/api/tasks/{id}` | Удалить задачу |

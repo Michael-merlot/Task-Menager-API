@@ -4,6 +4,7 @@ import com.taskmanager.exception.ProjectNotFoundException;
 import com.taskmanager.exception.TaskNotFoundException;
 import com.taskmanager.model.*;
 import com.taskmanager.repository.*;
+import com.taskmanager.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,5 +115,35 @@ public class TaskService {
         User currentUser = userService.getCurrentUser();
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
         return project.getOwner().getId().equals(currentUser.getId());
+    }
+
+    public UserStatistics getMyStatistics() {
+        User currentUser = userService.getCurrentUser();
+        List<Task> myTasks = taskRepository.findByAssignee(currentUser);
+        List<Project> myProjects = projectRepository.findByOwner(currentUser);
+
+        UserStatistics stats = new UserStatistics();
+        stats.setTotalProjects(myProjects.size());
+        stats.setActiveProjects((int) myProjects.stream()
+                .filter(p -> p.getStatus() == ProjectStatus.ACTIVE)
+                .count());
+        stats.setArchivedProjects((int) myProjects.stream()
+                .filter(p -> p.getStatus() == ProjectStatus.ARCHIVED)
+                .count());
+        stats.setTotalTasks(myTasks.size());
+        stats.setTodoTasks((int) myTasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.TODO)
+                .count());
+        stats.setInProgressTasks((int) myTasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS)
+                .count());
+        stats.setDoneTasks((int) myTasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.DONE)
+                .count());
+        stats.setOverdueTasks((int) myTasks.stream()
+                .filter(t -> t.getDueDate() != null && t.getDueDate().isBefore(java.time.LocalDate.now()) && t.getStatus() != TaskStatus.DONE)
+                .count());
+
+        return stats;
     }
 }
